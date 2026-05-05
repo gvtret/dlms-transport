@@ -24,11 +24,18 @@ enum class SerialStopBits
 
 struct SerialTransportOptions
 {
+  // Platform device name, for example "\\\\.\\COM3" on Windows or
+  // "/dev/ttyUSB0" on POSIX. The string is copied into options.
   std::string deviceName;
+
+  // Basic line settings. Mode switching, discovery, and friendly names are
+  // intentionally outside this transport skeleton.
   std::uint32_t baudRate;
   std::uint8_t dataBits;
   SerialParity parity;
   SerialStopBits stopBits;
+
+  // Timeouts used by read and write readiness where supported.
   TransportDuration readTimeout;
   TransportDuration writeTimeout;
 
@@ -43,13 +50,18 @@ struct SerialTransportOptions
   }
 };
 
+// Serial byte stream intended for HDLC profile users. It does not implement
+// IEC 62056-21 handshakes or HDLC framing.
 class SerialTransport : public IByteStream
 {
 public:
   explicit SerialTransport(const SerialTransportOptions& options);
   ~SerialTransport();
 
+  // Returns Ok, AlreadyOpen, InvalidArgument, or OpenFailed.
   TransportStatus Open();
+
+  // Idempotent; returns Ok.
   TransportStatus Close();
   bool IsOpen() const;
 

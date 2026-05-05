@@ -60,6 +60,7 @@ Udp_preservesDatagramBoundary
 Udp_receiveBufferTooSmall
 Udp_receiveTimeout
 Udp_closeIsIdempotent
+Udp_sendWithoutRemoteIsInvalid
 ```
 
 UDP tests should use loopback sockets owned by the test process.
@@ -70,6 +71,7 @@ UDP tests should use loopback sockets owned by the test process.
 Serial_invalidDeviceReturnsOpenFailed
 Serial_invalidOptionsReturnInvalidArgument
 Serial_closeIsIdempotent
+Serial_readAndWriteBeforeOpenReturnNotOpen
 ```
 
 Serial loopback tests should be optional because they require platform-specific
@@ -81,8 +83,8 @@ Root integration tests should verify only cross-layer contracts:
 
 ```text
 WrapperTcpProfileChannel_sendsAndReceivesApduBytes
+WrapperUdpProfileChannel_sendsOneDatagram
 HdlcProfileChannel_readsAndWritesByteStream
-AssociationClient_opensOverFakeProfileChannel
 ```
 
 Transport unit tests remain in `dlms-transport`; protocol integration tests

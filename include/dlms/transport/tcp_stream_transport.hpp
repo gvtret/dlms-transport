@@ -11,8 +11,13 @@ namespace transport {
 
 struct TcpStreamTransportOptions
 {
+  // Numeric address or DNS name owned by the caller; copied into options.
   std::string host;
+
+  // Remote TCP port. Port zero is invalid for Open.
   std::uint16_t port;
+
+  // Timeouts used for connect, read readiness, and write readiness.
   TransportDuration connectTimeout;
   TransportDuration readTimeout;
   TransportDuration writeTimeout;
@@ -26,13 +31,17 @@ struct TcpStreamTransportOptions
   }
 };
 
+// TCP client byte stream. This class does not parse wrapper headers or APDUs.
 class TcpStreamTransport : public IByteStream
 {
 public:
   explicit TcpStreamTransport(const TcpStreamTransportOptions& options);
   ~TcpStreamTransport();
 
+  // Returns Ok, AlreadyOpen, InvalidArgument, Timeout, or OpenFailed.
   TransportStatus Open();
+
+  // Idempotent; returns Ok.
   TransportStatus Close();
   bool IsOpen() const;
 
