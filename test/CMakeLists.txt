@@ -15,6 +15,7 @@ set(DLMS_TRANSPORT_TEST_SOURCES
   transport/test_tcp_server_transport.cpp
   transport/test_tcp_stream_transport.cpp
   transport/test_timer_scheduler.cpp
+  transport/test_transport_trace.cpp
   transport/test_transport_status.cpp
   transport/test_udp_transport.cpp)
 
