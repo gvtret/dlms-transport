@@ -65,16 +65,20 @@ include/dlms/transport/transport_status.hpp
 include/dlms/transport/byte_stream.hpp
 include/dlms/transport/datagram_transport.hpp
 include/dlms/transport/timer_scheduler.hpp
+include/dlms/transport/fake_transport.hpp
 include/dlms/transport/tcp_stream_transport.hpp
 include/dlms/transport/udp_transport.hpp
 include/dlms/transport/serial_transport.hpp
-include/dlms/transport/fake_transport.hpp
 src/transport/*.cpp
 test/transport/*.cpp
 ```
 
 TCP, UDP, and serial implementations may be split by platform when required.
 The public interfaces should remain platform-neutral.
+
+The initial committed API includes the protocol-neutral interfaces and fake
+transports. Concrete TCP, UDP, and serial implementations are planned follow-up
+modules.
 
 ## 6. Class Interaction Diagram
 

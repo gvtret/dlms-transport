@@ -16,5 +16,6 @@ Planned transports:
 See:
 
 - [requirements](docs/00_transport_requirements.md)
+- [API](docs/01_transport_api.md)
 - [architecture](docs/architecture.md)
 - [test plan](docs/03_transport_test_plan.md)

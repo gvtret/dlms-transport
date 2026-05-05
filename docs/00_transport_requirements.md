@@ -108,6 +108,7 @@ WriteFailed
 Timeout
 ConnectionClosed
 WouldBlock
+OutputBufferTooSmall
 UnsupportedFeature
 InternalError
 ```
