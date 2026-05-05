@@ -458,9 +458,9 @@ Commit message after completion:
 docs: document transport API ownership and status semantics
 ```
 
-## 10. v2 Candidates
+## 10. v2 Plan
 
-These are deliberately not part of v1:
+The following extensions are deliberately not part of v1:
 
 ```text
 TCP server/listener
@@ -472,7 +472,260 @@ platform-specific serial discovery
 diagnostic tracing hooks
 ```
 
-Each candidate needs its own requirements update before implementation.
+Each candidate needs an additive API design, loopback or fake tests, and a
+separate commit after verification.
+
+### Phase 9. v2 Requirements Alignment
+
+Deliverables:
+
+```text
+docs/00_transport_requirements.md
+docs/02_transport_implementation_plan.md
+docs/03_transport_test_plan.md
+```
+
+Verification:
+
+```text
+v2 scope keeps Wrapper, HDLC, APDU, association, and security policy out of transport
+Every v2 candidate has a verification gate
+git diff --check
+```
+
+Commit message after completion:
+
+```text
+docs: define transport v2 implementation gates
+```
+
+### Phase 10. TCP Server Listener
+
+Deliverables:
+
+```text
+include/dlms/transport/tcp_server_transport.hpp
+src/transport/tcp_server_transport.cpp
+test/transport/test_tcp_server_transport.cpp
+```
+
+Verification:
+
+```text
+TcpServer_openLoopback
+TcpServer_acceptsClientConnection
+TcpServer_acceptedConnectionReadsAndWritesBytes
+TcpServer_acceptTimeout
+TcpServer_closeUnblocksAccept
+TcpServer_closeIsIdempotent
+ctest --test-dir build --output-on-failure
+```
+
+Scope notes:
+
+```text
+Accepted connections expose IByteStream semantics
+TCP server does not parse Wrapper APDU lengths
+TCP server does not route by COSEM wrapper port
+```
+
+Commit message after completion:
+
+```text
+feat: add TCP server byte stream listener
+```
+
+### Phase 11. Diagnostic Tracing Hooks
+
+Deliverables:
+
+```text
+include/dlms/transport/transport_trace.hpp
+test/transport/test_transport_trace.cpp
+```
+
+Verification:
+
+```text
+TraceSink_receivesLifecycleEvents
+TraceSink_canBeDisabled
+TraceSink_doesNotCopyPayloadByDefault
+ctest --test-dir build --output-on-failure
+```
+
+Scope notes:
+
+```text
+Tracing reports lifecycle, direction, byte counts, endpoints, and statuses
+Payload capture remains opt-in or out of scope
+```
+
+Commit message after completion:
+
+```text
+feat: add transport diagnostic tracing hooks
+```
+
+### Phase 12. Non-Blocking Interfaces
+
+Deliverables:
+
+```text
+include/dlms/transport/non_blocking_byte_stream.hpp
+include/dlms/transport/non_blocking_datagram_transport.hpp
+test/transport/test_non_blocking_transport_contracts.cpp
+```
+
+Verification:
+
+```text
+NonBlockingByteStream_returnsWouldBlockWithoutClosing
+NonBlockingDatagram_returnsWouldBlockWithoutDroppingDatagram
+Blocking v1 interfaces keep their current behavior
+ctest --test-dir build --output-on-failure
+```
+
+Scope notes:
+
+```text
+Non-blocking APIs are additive
+Event-loop integration is a later phase built on readiness handles or polling
+```
+
+Commit message after completion:
+
+```text
+feat: add non-blocking transport interfaces
+```
+
+### Phase 13. Event Loop Integration
+
+Deliverables:
+
+```text
+include/dlms/transport/transport_event_loop.hpp
+test/transport/test_transport_event_loop.cpp
+```
+
+Verification:
+
+```text
+EventLoop_registersReadableWritableTimers
+EventLoop_dispatchesTransportCallbacks
+EventLoop_unregisterIsIdempotent
+ctest --test-dir build --output-on-failure
+```
+
+Scope notes:
+
+```text
+Event loop exposes readiness and timer scheduling only
+Retry and association policy remain above transport
+```
+
+Commit message after completion:
+
+```text
+feat: add transport event loop integration
+```
+
+### Phase 14. TLS Byte Stream Wrapper
+
+Deliverables:
+
+```text
+include/dlms/transport/tls_stream_transport.hpp
+src/transport/tls_stream_transport.cpp
+test/transport/test_tls_stream_transport.cpp
+```
+
+Verification:
+
+```text
+TlsStream_invalidConfigurationReturnsInvalidArgument
+TlsStream_wrapsByteStreamLifecycle
+TlsStream_reportsHandshakeFailure
+ctest --test-dir build --output-on-failure
+```
+
+Scope notes:
+
+```text
+TLS is a byte-stream transport wrapper
+Certificate policy, cipher policy, and DLMS security suite selection are not decided here
+```
+
+Commit message after completion:
+
+```text
+feat: add TLS byte stream transport wrapper
+```
+
+### Phase 15. Serial IEC 62056-21 Mode E Helper
+
+Deliverables:
+
+```text
+include/dlms/transport/iec62056_21_mode_e.hpp
+src/transport/iec62056_21_mode_e.cpp
+test/transport/test_iec62056_21_mode_e.cpp
+```
+
+Verification:
+
+```text
+ModeE_buildsSignOnRequest
+ModeE_parsesIdentificationOptions
+ModeE_selectsRequestedBaudRate
+ModeE_rejectsUnsupportedMode
+ModeE_doesNotParseHdlcFrames
+ctest --test-dir build --output-on-failure
+```
+
+Scope notes:
+
+```text
+Mode E helper prepares local serial link setup only
+HDLC session state and frame exchange remain outside transport
+```
+
+Commit message after completion:
+
+```text
+feat: add IEC 62056-21 mode E serial helper
+```
+
+### Phase 16. Platform Serial Discovery
+
+Deliverables:
+
+```text
+include/dlms/transport/serial_port_discovery.hpp
+src/transport/serial_port_discovery.cpp
+test/transport/test_serial_port_discovery.cpp
+```
+
+Verification:
+
+```text
+SerialDiscovery_returnsEmptyOrDetectedPorts
+SerialDiscovery_reportsStablePortFields
+SerialDiscovery_handlesUnavailablePlatformSupport
+ctest --test-dir build --output-on-failure
+```
+
+Scope notes:
+
+```text
+Discovery is best-effort platform metadata
+Applications still choose the port and policy
+```
+
+Commit message after completion:
+
+```text
+feat: add serial port discovery API
+```
 
 ## 11. Main Risks and Controls
 

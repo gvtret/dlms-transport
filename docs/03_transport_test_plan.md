@@ -104,3 +104,66 @@ HdlcProfileChannel_readsAndWritesByteStream
 
 Transport unit tests remain in `dlms-transport`; protocol integration tests
 belong in the root repository.
+
+## v2 Tests
+
+TCP server/listener tests:
+
+```text
+TcpServer_openLoopback
+TcpServer_acceptsClientConnection
+TcpServer_acceptedConnectionReadsAndWritesBytes
+TcpServer_acceptTimeout
+TcpServer_closeUnblocksAccept
+TcpServer_closeIsIdempotent
+```
+
+Diagnostic tracing tests:
+
+```text
+TraceSink_receivesLifecycleEvents
+TraceSink_canBeDisabled
+TraceSink_doesNotCopyPayloadByDefault
+```
+
+Non-blocking transport tests:
+
+```text
+NonBlockingByteStream_returnsWouldBlockWithoutClosing
+NonBlockingDatagram_returnsWouldBlockWithoutDroppingDatagram
+NonBlockingInterfaces_doNotChangeBlockingContracts
+```
+
+Event loop integration tests:
+
+```text
+EventLoop_registersReadableWritableTimers
+EventLoop_dispatchesTransportCallbacks
+EventLoop_unregisterIsIdempotent
+```
+
+TLS wrapper tests:
+
+```text
+TlsStream_invalidConfigurationReturnsInvalidArgument
+TlsStream_wrapsByteStreamLifecycle
+TlsStream_reportsHandshakeFailure
+```
+
+IEC 62056-21 mode E helper tests:
+
+```text
+ModeE_buildsSignOnRequest
+ModeE_parsesIdentificationOptions
+ModeE_selectsRequestedBaudRate
+ModeE_rejectsUnsupportedMode
+ModeE_doesNotParseHdlcFrames
+```
+
+Serial discovery tests:
+
+```text
+SerialDiscovery_returnsEmptyOrDetectedPorts
+SerialDiscovery_reportsStablePortFields
+SerialDiscovery_handlesUnavailablePlatformSupport
+```

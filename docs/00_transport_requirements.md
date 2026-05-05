@@ -28,8 +28,8 @@ Target users:
 | Serial model | Byte stream |
 | UDP model | Datagram |
 | Blocking model v1 | Synchronous API first |
-| Async model | Out of scope for v1 |
-| C ABI | Out of scope until C++ API stabilizes |
+| Async model | Planned v2 extension; synchronous API remains stable |
+| C ABI | Stable protocol-neutral API over v1 transport primitives |
 | Tests | GoogleTest |
 
 ## 3. Layering Rules
@@ -171,3 +171,32 @@ The following are not implemented in v1:
 - persistent configuration;
 - asynchronous event loops;
 - TLS.
+
+## 11. v2 Scope Requirements
+
+v2 extensions must keep the same layer boundary as v1:
+
+- no Wrapper WPDU parsing;
+- no HDLC frame parsing;
+- no APDU parsing or block transfer;
+- no association retry policy;
+- no security policy decisions.
+
+TCP server/listener support shall accept inbound byte-stream connections and
+return per-connection `IByteStream` instances. It shall not inspect Wrapper
+length fields or COSEM wrapper ports.
+
+Non-blocking and event-loop APIs shall be additive. They must not change the
+blocking semantics of the v1 interfaces.
+
+TLS support, if implemented, shall wrap byte-stream transport semantics. The
+transport layer may report TLS handshake and I/O failures as transport status
+codes, but certificate policy and security configuration belong above this
+layer.
+
+Serial IEC 62056-21 mode E support shall be limited to local-interface link
+initialization and serial parameter switching. HDLC session establishment and
+frame handling remain owned by `dlms-hdlc` and profile layers.
+
+Diagnostic tracing shall report transport lifecycle and I/O events without
+copying arbitrary user payloads by default.
