@@ -12,6 +12,7 @@ endif()
 set(DLMS_TRANSPORT_TEST_SOURCES
   transport/test_fake_transport.cpp
   transport/test_serial_transport.cpp
+  transport/test_tcp_server_transport.cpp
   transport/test_tcp_stream_transport.cpp
   transport/test_timer_scheduler.cpp
   transport/test_transport_status.cpp

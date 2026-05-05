@@ -10,6 +10,7 @@ option(DLMS_USE_SYSTEM_GTEST "Use system-installed GoogleTest" OFF)
 
 add_library(dlms_transport
   src/transport/serial_transport.cpp
+  src/transport/tcp_server_transport.cpp
   src/transport/tcp_stream_transport.cpp
   src/transport/udp_transport.cpp
   src/transport/timer_scheduler.cpp)
