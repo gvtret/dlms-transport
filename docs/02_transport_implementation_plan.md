@@ -463,7 +463,6 @@ non-blocking APIs
 event-loop integration
 TLS transport wrapper
 serial IEC 62056-21 mode E handshake helper
-C ABI
 platform-specific serial discovery
 diagnostic tracing hooks
 ```

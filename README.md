@@ -71,6 +71,29 @@ dlms::transport::SerialTransport stream(options);
 dlms::transport::TransportStatus status = stream.Open();
 ```
 
+The stable C ABI is enabled by default through `DLMS_BUILD_C_API=ON`.
+Applications that cannot use the C++ API can include
+`dlms/transport/transport_c_api.h` and manage opaque handles explicitly:
+
+```c
+#include "dlms/transport/transport_c_api.h"
+
+dlms_transport_udp_options_t options;
+options.local_host = "127.0.0.1";
+options.local_port = 0u;
+options.remote_host = 0;
+options.remote_port = 0u;
+options.receive_timeout_ms = 5000u;
+options.send_timeout_ms = 5000u;
+
+dlms_transport_udp_t* udp = 0;
+dlms_transport_status_t status = dlms_transport_udp_create(&options, &udp);
+if (status == DLMS_TRANSPORT_STATUS_OK) {
+  status = dlms_transport_udp_open(udp);
+}
+dlms_transport_udp_destroy(udp);
+```
+
 See:
 
 - [requirements](docs/00_transport_requirements.md)

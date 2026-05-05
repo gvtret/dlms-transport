@@ -5,7 +5,7 @@ project(dlms_transport
   LANGUAGES C CXX)
 
 option(DLMS_BUILD_TESTS "Build GoogleTest tests" ON)
-option(DLMS_BUILD_C_API "Build stable C ABI wrapper" OFF)
+option(DLMS_BUILD_C_API "Build stable C ABI wrapper" ON)
 option(DLMS_USE_SYSTEM_GTEST "Use system-installed GoogleTest" OFF)
 
 add_library(dlms_transport
@@ -13,6 +13,12 @@ add_library(dlms_transport
   src/transport/tcp_stream_transport.cpp
   src/transport/udp_transport.cpp
   src/transport/timer_scheduler.cpp)
+
+if(DLMS_BUILD_C_API)
+  target_sources(dlms_transport
+    PRIVATE
+      src/transport/transport_c_api.cpp)
+endif()
 
 target_compile_features(dlms_transport PUBLIC cxx_std_11)
 

@@ -77,6 +77,21 @@ Serial_readAndWriteBeforeOpenReturnNotOpen
 Serial loopback tests should be optional because they require platform-specific
 virtual serial setup.
 
+## C ABI Tests
+
+```text
+TransportCApi_statusValuesMatchStableAbi
+TransportCApi_timerLifecycle
+TransportCApi_tcpLifecycleAndInvalidArguments
+TransportCApi_udpLoopbackDatagram
+TransportCApi_udpReportsSmallOutputBuffer
+TransportCApi_serialLifecycleAndInvalidDevice
+TransportCApi_headerCompilesAsC
+```
+
+C ABI tests must verify both `DLMS_BUILD_C_API=ON` and `DLMS_BUILD_C_API=OFF`.
+The OFF build must not compile or link C ABI tests.
+
 ## Integration Tests
 
 Root integration tests should verify only cross-layer contracts:
