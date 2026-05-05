@@ -231,8 +231,8 @@ CMakeLists.txt
 Verification:
 
 ```text
-cmake -S . -B build-codex
-cmake --build build-codex
+cmake -S . -B build
+cmake --build build
 Interfaces compile as C++11
 No dependency on HDLC, LLC, Wrapper, APDU, or profile headers
 ```
@@ -258,7 +258,7 @@ Verification:
 ```text
 DLMS_BUILD_TESTS=ON builds tests
 DLMS_USE_SYSTEM_GTEST=ON/OFF path matches sibling repositories
-ctest --test-dir build-codex passes
+ctest --test-dir build passes
 Fake byte stream and datagram contract tests pass
 ```
 
@@ -315,7 +315,7 @@ TcpStream_peerCloseReturnsConnectionClosed
 TcpStream_connectTimeout
 TcpStream_readTimeout
 TcpStream_closeIsIdempotent
-ctest --test-dir build-codex passes
+ctest --test-dir build passes
 ```
 
 Scope notes:
@@ -351,7 +351,7 @@ Udp_preservesDatagramBoundary
 Udp_receiveBufferTooSmall
 Udp_receiveTimeout
 Udp_closeIsIdempotent
-ctest --test-dir build-codex passes
+ctest --test-dir build passes
 ```
 
 Scope notes:
