@@ -17,5 +17,6 @@ See:
 
 - [requirements](docs/00_transport_requirements.md)
 - [API](docs/01_transport_api.md)
+- [implementation plan](docs/02_transport_implementation_plan.md)
 - [architecture](docs/architecture.md)
 - [test plan](docs/03_transport_test_plan.md)
