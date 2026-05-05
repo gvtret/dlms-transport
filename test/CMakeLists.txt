@@ -15,6 +15,7 @@ set(DLMS_TRANSPORT_TEST_SOURCES
   transport/test_serial_transport.cpp
   transport/test_tcp_server_transport.cpp
   transport/test_tcp_stream_transport.cpp
+  transport/test_tls_stream_transport.cpp
   transport/test_timer_scheduler.cpp
   transport/test_transport_event_loop.cpp
   transport/test_transport_trace.cpp
@@ -24,7 +25,7 @@ set(DLMS_TRANSPORT_TEST_SOURCES
 if(DLMS_BUILD_C_API)
   list(APPEND DLMS_TRANSPORT_TEST_SOURCES
     transport/test_transport_c_api.cpp
-  transport/test_transport_c_header.c)
+    transport/test_transport_c_header.c)
 endif()
 
 add_executable(dlms_transport_tests
