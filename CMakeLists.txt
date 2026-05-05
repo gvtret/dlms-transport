@@ -9,6 +9,7 @@ option(DLMS_BUILD_C_API "Build stable C ABI wrapper" OFF)
 option(DLMS_USE_SYSTEM_GTEST "Use system-installed GoogleTest" OFF)
 
 add_library(dlms_transport
+  src/transport/tcp_stream_transport.cpp
   src/transport/timer_scheduler.cpp)
 
 target_compile_features(dlms_transport PUBLIC cxx_std_11)
@@ -16,6 +17,12 @@ target_compile_features(dlms_transport PUBLIC cxx_std_11)
 target_include_directories(dlms_transport
   PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+if(WIN32)
+  target_link_libraries(dlms_transport
+    PUBLIC
+      ws2_32)
+endif()
 
 set(DLMS_TRANSPORT_HAS_API ON CACHE INTERNAL
   "dlms-transport exposes the transport API required by upper-layer integration tests")
