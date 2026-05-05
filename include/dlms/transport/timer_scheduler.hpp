@@ -21,5 +21,12 @@ public:
   virtual TransportStatus SleepFor(TransportDuration duration) = 0;
 };
 
+class TimerScheduler : public ITimerScheduler
+{
+public:
+  TransportStatus MonotonicMilliseconds(std::uint64_t& value) const;
+  TransportStatus SleepFor(TransportDuration duration);
+};
+
 } // namespace transport
 } // namespace dlms

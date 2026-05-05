@@ -8,12 +8,13 @@ option(DLMS_BUILD_TESTS "Build GoogleTest tests" ON)
 option(DLMS_BUILD_C_API "Build stable C ABI wrapper" OFF)
 option(DLMS_USE_SYSTEM_GTEST "Use system-installed GoogleTest" OFF)
 
-add_library(dlms_transport INTERFACE)
+add_library(dlms_transport
+  src/transport/timer_scheduler.cpp)
 
-target_compile_features(dlms_transport INTERFACE cxx_std_11)
+target_compile_features(dlms_transport PUBLIC cxx_std_11)
 
 target_include_directories(dlms_transport
-  INTERFACE
+  PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 set(DLMS_TRANSPORT_HAS_API ON CACHE INTERNAL

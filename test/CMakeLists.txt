@@ -11,6 +11,7 @@ endif()
 
 add_executable(dlms_transport_tests
   transport/test_fake_transport.cpp
+  transport/test_timer_scheduler.cpp
   transport/test_transport_status.cpp)
 
 target_link_libraries(dlms_transport_tests
