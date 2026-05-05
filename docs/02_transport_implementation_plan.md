@@ -60,7 +60,7 @@ Relevant conclusions from the external documents:
 | APDU block transfer | Out of scope; implemented above profile/association layers |
 | Server sockets | Deferred until client transports are stable |
 | Async/event loop | Out of scope for v1 |
-| C ABI | Deferred until C++ API is stable |
+| C ABI | Stable protocol-neutral C API over v1 transport primitives |
 | Tests | GoogleTest, loopback/fake only |
 
 ## 4. Target Layer Position
@@ -121,6 +121,7 @@ fake byte stream and fake datagram test doubles
 TCP client stream transport
 UDP datagram transport
 initial serial stream transport API and invalid-device handling
+stable C ABI for timer, TCP, UDP, and serial transport handles
 loopback/fake GoogleTest coverage
 CMake integration compatible with the root workspace
 ```
@@ -155,16 +156,20 @@ include/dlms/transport/fake_transport.hpp
 include/dlms/transport/tcp_stream_transport.hpp
 include/dlms/transport/udp_transport.hpp
 include/dlms/transport/serial_transport.hpp
+include/dlms/transport/transport_c_api.h
 src/transport/tcp_stream_transport.cpp
 src/transport/udp_transport.cpp
 src/transport/serial_transport.cpp
 src/transport/timer_scheduler.cpp
+src/transport/transport_c_api.cpp
 test/CMakeLists.txt
 test/transport/test_transport_status.cpp
 test/transport/test_fake_transport.cpp
 test/transport/test_tcp_stream_transport.cpp
 test/transport/test_udp_transport.cpp
 test/transport/test_serial_transport.cpp
+test/transport/test_transport_c_api.cpp
+test/transport/test_transport_c_header.c
 ```
 
 Platform-specific implementations may be split under `src/transport/platform/`
@@ -550,6 +555,7 @@ UDP datagram transport
 serial stream skeleton
 loopback/fake GoogleTest coverage
 root workspace integration hooks
+stable C ABI
 ```
 
 Not included:
