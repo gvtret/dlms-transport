@@ -11,6 +11,7 @@ endif()
 
 set(DLMS_TRANSPORT_TEST_SOURCES
   transport/test_fake_transport.cpp
+  transport/test_iec62056_21_mode_e.cpp
   transport/test_non_blocking_transport_contracts.cpp
   transport/test_serial_transport.cpp
   transport/test_tcp_server_transport.cpp
