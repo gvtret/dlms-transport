@@ -29,7 +29,7 @@ struct SerialTransportOptions
   std::string deviceName;
 
   // Basic line settings. Mode switching, discovery, and friendly names are
-  // intentionally outside this transport skeleton.
+  // intentionally outside this transport implementation.
   std::uint32_t baudRate;
   std::uint8_t dataBits;
   SerialParity parity;

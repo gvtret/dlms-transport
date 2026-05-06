@@ -374,7 +374,7 @@ Commit message after completion:
 feat: implement UDP datagram transport
 ```
 
-### Phase 6. Serial Stream Transport Skeleton
+### Phase 6. Serial Stream Transport
 
 Deliverables:
 
@@ -405,7 +405,7 @@ Serial discovery and friendly names are deferred
 Commit message after completion:
 
 ```text
-feat: add serial stream transport skeleton
+feat: add serial stream transport
 ```
 
 ### Phase 7. Cross-Repository Integration Hooks
@@ -807,7 +807,7 @@ fake byte stream and datagram channels
 timer scheduler
 TCP client byte stream
 UDP datagram transport
-serial stream skeleton
+serial stream transport
 loopback/fake GoogleTest coverage
 root workspace integration hooks
 stable C ABI
