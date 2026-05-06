@@ -96,6 +96,7 @@ classDiagram
     Timeout
     ConnectionClosed
     WouldBlock
+    OutputBufferTooSmall
     UnsupportedFeature
     InternalError
   }

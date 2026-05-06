@@ -58,8 +58,8 @@ Relevant conclusions from the external documents:
 | Wrapper WPDU | Out of scope; implemented by `dlms-wrapper` |
 | HDLC session/framing | Out of scope; implemented by `dlms-hdlc` and `dlms-profile` |
 | APDU block transfer | Out of scope; implemented above profile/association layers |
-| Server sockets | Deferred until client transports are stable |
-| Async/event loop | Out of scope for v1 |
+| Server sockets | Implemented as TCP server/listener follow-up |
+| Async/event loop | Implemented as non-blocking/event-loop follow-up |
 | C ABI | Stable protocol-neutral C API over v1 transport primitives |
 | Tests | GoogleTest, loopback/fake only |
 
@@ -126,7 +126,7 @@ loopback/fake GoogleTest coverage
 CMake integration compatible with the root workspace
 ```
 
-## 6. v1 Non-Goals
+## 6. Layer Non-Goals
 
 ```text
 Wrapper WPDU parsing or length tracking
@@ -136,12 +136,12 @@ APDU parsing or block transfer
 association open/release/abort state
 COSEM object model
 security/ciphering
-TLS
-async event loop
-TCP server/listener
-serial device discovery
 platform-specific friendly serial names
 ```
+
+TLS, non-blocking/event-loop APIs, TCP server/listener, serial discovery, and
+IEC 62056-21 mode E helper are transport-level extension modules. They remain
+inside this repository but do not change the protocol boundary above.
 
 ## 7. Project Layout
 
@@ -458,9 +458,10 @@ Commit message after completion:
 docs: document transport API ownership and status semantics
 ```
 
-## 10. v2 Plan
+## 10. Implemented Follow-Up Extensions
 
-The following extensions are deliberately not part of v1:
+The following extensions were originally v2 candidates and are now present in
+the repository as implemented modules:
 
 ```text
 TCP server/listener
@@ -472,10 +473,11 @@ platform-specific serial discovery
 diagnostic tracing hooks
 ```
 
-Each candidate needs an additive API design, loopback or fake tests, and a
-separate commit after verification.
+The phase descriptions below remain as historical implementation gates and
+verification records. They should be treated as completed follow-up phases, not
+as future scope.
 
-### Phase 9. v2 Requirements Alignment
+### Phase 9. Follow-Up Requirements Alignment
 
 Deliverables:
 
@@ -811,7 +813,7 @@ root workspace integration hooks
 stable C ABI
 ```
 
-Not included:
+Still not included:
 
 ```text
 Wrapper codec
@@ -820,7 +822,4 @@ APDU parsing
 association state
 COSEM object model
 security
-async APIs
-TCP server/listener
-TLS
 ```
