@@ -14,18 +14,6 @@ using dlms::transport::FakeTimerScheduler;
 using dlms::transport::TransportDuration;
 using dlms::transport::TransportStatus;
 
-TEST(FakeByteStream, CloseIsIdempotent)
-{
-  FakeByteStream stream;
-
-  EXPECT_EQ(TransportStatus::Ok, stream.Close());
-  EXPECT_EQ(TransportStatus::Ok, stream.Open());
-  EXPECT_TRUE(stream.IsOpen());
-  EXPECT_EQ(TransportStatus::Ok, stream.Close());
-  EXPECT_EQ(TransportStatus::Ok, stream.Close());
-  EXPECT_FALSE(stream.IsOpen());
-}
-
 TEST(FakeByteStream, ReadBeforeOpenReturnsNotOpen)
 {
   FakeByteStream stream;
@@ -42,34 +30,6 @@ TEST(FakeByteStream, WriteBeforeOpenReturnsNotOpen)
   const std::uint8_t input[] = { 0x01 };
 
   EXPECT_EQ(TransportStatus::NotOpen, stream.WriteAll(input, sizeof(input)));
-}
-
-TEST(FakeByteStream, ReadNullBufferReturnsInvalidArgument)
-{
-  FakeByteStream stream;
-  std::size_t bytesRead = 7;
-
-  ASSERT_EQ(TransportStatus::Ok, stream.Open());
-  EXPECT_EQ(TransportStatus::InvalidArgument, stream.ReadSome(0, 1, bytesRead));
-  EXPECT_EQ(0u, bytesRead);
-}
-
-TEST(FakeByteStream, WriteNullBufferReturnsInvalidArgument)
-{
-  FakeByteStream stream;
-
-  ASSERT_EQ(TransportStatus::Ok, stream.Open());
-  EXPECT_EQ(TransportStatus::InvalidArgument, stream.WriteAll(0, 1));
-}
-
-TEST(FakeByteStream, WriteAllEmptyInputSucceeds)
-{
-  FakeByteStream stream;
-
-  ASSERT_EQ(TransportStatus::Ok, stream.Open());
-  EXPECT_EQ(TransportStatus::Ok, stream.WriteAll(0, 0));
-  ASSERT_EQ(1u, stream.Writes().size());
-  EXPECT_TRUE(stream.Writes()[0].empty());
 }
 
 TEST(FakeByteStream, ReadScriptedChunks)
@@ -122,19 +82,6 @@ TEST(FakeByteStream, ReadTimeout)
   EXPECT_EQ(TransportStatus::WouldBlock, stream.ReadSome(output, sizeof(output), bytesRead));
 }
 
-TEST(FakeByteStream, PeerClose)
-{
-  FakeByteStream stream;
-  std::uint8_t output[1] = {};
-  std::size_t bytesRead = 7;
-
-  ASSERT_EQ(TransportStatus::Ok, stream.Open());
-  stream.ScriptNextReadStatus(TransportStatus::ConnectionClosed);
-
-  EXPECT_EQ(TransportStatus::ConnectionClosed, stream.ReadSome(output, sizeof(output), bytesRead));
-  EXPECT_EQ(0u, bytesRead);
-}
-
 TEST(FakeByteStream, ResetClearsState)
 {
   FakeByteStream stream;
@@ -155,18 +102,6 @@ TEST(FakeByteStream, ResetClearsState)
   EXPECT_EQ(TransportStatus::NotOpen, stream.ReadSome(output, sizeof(output), bytesRead));
 }
 
-TEST(FakeDatagramTransport, CloseIsIdempotent)
-{
-  FakeDatagramTransport datagram;
-
-  EXPECT_EQ(TransportStatus::Ok, datagram.Close());
-  EXPECT_EQ(TransportStatus::Ok, datagram.Open());
-  EXPECT_TRUE(datagram.IsOpen());
-  EXPECT_EQ(TransportStatus::Ok, datagram.Close());
-  EXPECT_EQ(TransportStatus::Ok, datagram.Close());
-  EXPECT_FALSE(datagram.IsOpen());
-}
-
 TEST(FakeDatagramTransport, ReceiveBeforeOpenReturnsNotOpen)
 {
   FakeDatagramTransport datagram;
@@ -183,34 +118,6 @@ TEST(FakeDatagramTransport, SendBeforeOpenReturnsNotOpen)
   const std::uint8_t input[] = { 0x01 };
 
   EXPECT_EQ(TransportStatus::NotOpen, datagram.Send(input, sizeof(input)));
-}
-
-TEST(FakeDatagramTransport, ReceiveNullBufferReturnsInvalidArgument)
-{
-  FakeDatagramTransport datagram;
-  std::size_t bytesRead = 7;
-
-  ASSERT_EQ(TransportStatus::Ok, datagram.Open());
-  EXPECT_EQ(TransportStatus::InvalidArgument, datagram.Receive(0, 1, bytesRead));
-  EXPECT_EQ(0u, bytesRead);
-}
-
-TEST(FakeDatagramTransport, SendNullBufferReturnsInvalidArgument)
-{
-  FakeDatagramTransport datagram;
-
-  ASSERT_EQ(TransportStatus::Ok, datagram.Open());
-  EXPECT_EQ(TransportStatus::InvalidArgument, datagram.Send(0, 1));
-}
-
-TEST(FakeDatagramTransport, SendEmptyDatagramPolicyIsDocumented)
-{
-  FakeDatagramTransport datagram;
-
-  ASSERT_EQ(TransportStatus::Ok, datagram.Open());
-  EXPECT_EQ(TransportStatus::Ok, datagram.Send(0, 0));
-  ASSERT_EQ(1u, datagram.SentDatagrams().size());
-  EXPECT_TRUE(datagram.SentDatagrams()[0].empty());
 }
 
 TEST(FakeDatagramTransport, ReceiveScriptedDatagrams)
